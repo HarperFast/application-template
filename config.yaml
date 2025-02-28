@@ -9,7 +9,6 @@ jsResource: # Loads JavaScript modules such that their exports are exported as r
   files: resources.js # the entry module for resources
   # path: / # exported resources are on the root path by default, like http://server/resource-name
 static: # This allows static files to be directly accessible
-  root: web
   files: web/**
 roles: # This can define the roles that are used in the application
   files: roles.yaml
