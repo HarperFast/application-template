@@ -16,3 +16,7 @@ jsResource:
 # Serve the static files from the web directory as a web application
 static:
   files: 'web/*'
+
+# Loads data into user tables from YAML or JSON files
+dataLoader: 
+  files: data/*.{json,yaml,yml}
