@@ -1,0 +1,63 @@
+# This is a sample YAML data file for HarperDB Data Loader
+# Format: { database, table, records[] }
+# 
+# This example shows inserting tables and records into a 
+# specific database, instead of the default 'data' database.
+# 
+# Example: Products for an e-commerce application
+# ```yaml
+# database: dev
+# table: products
+# records:
+#   - id: 1
+#     name: "Laptop"
+#     price: 999.99
+#     category: "Electronics"
+#     inStock: true
+#     __createdtime__: 1682752800000
+#     __updatedtime__: 1682752800000
+#   - id: 2
+#     name: "Smartphone"
+#     price: 699.99
+#     category: "Electronics"
+#     inStock: false
+#     __createdtime__: 1682752801000
+#     __updatedtime__: 1682752801000
+#   - id: 3
+#     name: "Desk Chair"
+#     price: 199.99
+#     category: "Furniture"
+#     inStock: true
+#     __createdtime__: 1682752802000
+#     __updatedtime__: 1682752802000
+# ```
+# 
+# If you need to load data into multiple tables, use separate files
+# for each table. For example:
+#
+# categories.yaml:
+# ```yaml
+# database: dev
+# table: categories
+# records:
+#   - id: "electronics"
+#     name: "Electronics"
+#     description: "Electronic devices and gadgets"
+#     __createdtime__: 1682752803000
+#     __updatedtime__: 1682752803000
+# ```
+#
+# users.yaml:
+# ```yaml
+# database: dev
+# table: users
+# records:
+#   - id: 1
+#     username: "john_doe"
+#     email: "john@example.com"
+#     firstName: "John"
+#     lastName: "Doe"
+#     active: true
+#     __createdtime__: 1682752806000
+#     __updatedtime__: 1682752806000
+# ```
