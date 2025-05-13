@@ -15,6 +15,7 @@ type Product @table @export {
     name: String @indexed
     price: Float
     category: Category @relationship(from: categoryId)
+    details: Any
     inStock: Boolean
 }
 
@@ -28,6 +29,14 @@ type Category @table @export {
 }
 
 type User @table @export {
+    id: ID @primaryKey
+    username: String @indexed
+    email: String @indexed
+    firstName: String
+    lastName: String
+}
+
+type MycoUser @table(database: "myco", table: "User") @export {
     id: ID @primaryKey
     username: String @indexed
     email: String @indexed

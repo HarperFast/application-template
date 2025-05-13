@@ -1,20 +1,21 @@
 {
+  "database": "myco",
   "table": "User",
   "records": [
     {
       "id": "1",
-      "username": "john_doe",
-      "email": "john@example.com",
-      "firstName": "John",
+      "username": "jane_doe",
+      "email": "jane@example.com",
+      "firstName": "Jane",
       "lastName": "Doe",
       "__createdtime__": 1682752806000,
       "__updatedtime__": 1682752806000
     },
     {
       "id": "2",
-      "username": "jane_smith",
-      "email": "jane@example.com",
-      "firstName": "Jane",
+      "username": "Jon_smith",
+      "email": "jon@example.com",
+      "firstName": "Jon",
       "lastName": "Smith",
       "__createdtime__": 1682752807000,
       "__updatedtime__": 1682752807000
