@@ -4,31 +4,23 @@
     {
       "id": "electronics",
       "name": "Electronics",
-      "description": "Electronic devices and gadgets",
-      "__createdtime__": 1682752803000,
-      "__updatedtime__": 1682752803000
+      "description": "Electronic devices and gadgets"
     },
     {
       "id": "furniture",
       "name": "Furniture",
-      "description": "Home and office furniture",
-      "__createdtime__": 1682752804000,
-      "__updatedtime__": 1682752804000
+      "description": "Home and office furniture"
     },
     {
       "id": "clothing",
       "name": "Clothing",
-      "description": "Apparel and accessories",
-      "__createdtime__": 1682752805000,
-      "__updatedtime__": 1682752805000
+      "description": "Apparel and accessories"
     },
     {
       "id": "pants",
       "name": "Pants",
       "description": "Apparel and accessories",
-      "parent": "clothing",
-      "__createdtime__": 1682752805000,
-      "__updatedtime__": 1682752805000
+      "parent": "clothing"
     }
   ]
 }

@@ -1,70 +1,73 @@
 # HarperDB Data Loader
 
-This directory contains data files that are automatically loaded into your HarperDB database tables when your application starts. The Data Loader component reads YAML or JSON files and populates your database tables with the specified data.
+This directory contains YAML or JSON files that are automatically loaded into your HarperDB database tables when your application starts.
 
 ## How It Works
 
-1. Data files must be placed in this directory with `.yaml`, `.yml`, or `.json` extensions
-2. Data files are processed when HarperDB starts
-3. Records are loaded based on timestamp comparison:
-   - New records are added
-   - Existing records are updated if the new data has a newer `__updatedtime__`
-   - Existing records are kept if they have a newer `__updatedtime__` than the data file
+1. Place data files in this directory with `.yaml`, `.yml`, or `.json` extensions
+2. Files are processed when HarperDB starts
+3. Records are inserted/updated based on file modification time:
+   - New records are always added
+   - Existing records are only updated if the file's modification time is newer than the record's stored timestamp
+   - Records with timestamps newer than the file's modification time are preserved unchanged
 
 ## File Format
 
-### YAML Example
-
-```yaml
-# Format: { database, table, records[] }
-database: dev
-table: products
-records:
-  - id: 1
-    name: "Laptop"
-    price: 999.99
-    __createdtime__: 1682752800000
-    __updatedtime__: 1682752800000
-  - id: 2
-    name: "Smartphone"
-    price: 699.99
-    __createdtime__: 1682752801000
-    __updatedtime__: 1682752801000
-```
+Data files must contain `table` and `records` fields. The `database` field is optional.
 
 ### JSON Example
 
 ```json
 {
-  "database": "dev",
-  "table": "products",
-  "records": [
+  "database": "dev",       // Optional - uses default database if omitted
+  "table": "Product",      // Required - name of the table
+  "records": [             // Required - array of records
     {
-      "id": 1,
+      "id": "1",           // Primary key field
       "name": "Laptop",
-      "price": 999.99,
-      "__createdtime__": 1682752800000,
-      "__updatedtime__": 1682752800000
-    },
-    {
-      "id": 2,
-      "name": "Smartphone",
-      "price": 699.99,
-      "__createdtime__": 1682752801000,
-      "__updatedtime__": 1682752801000
+      "price": 999.99
     }
   ]
 }
 ```
 
-## Important Notes
+### YAML Example
 
-- Tables are automatically created if they don't exist
-- Primary keys are preserved from your data
-- Use `__updatedtime__` and `__createdtime__` timestamps to control updates
-  - Records with newer `__updatedtime__` values will overwrite older ones
-  - Records with older `__updatedtime__` values will be skipped (not overwritten)
-  - If no timestamp is provided, the current time is used as `__updatedtime__`
-- One table per file: Each file should have one database/table combination
-- You can have multiple data files, and they'll all be processed
-- The `database` field is optional; if not provided, the default database is used
+```yaml
+database: dev              # Optional - uses default database if omitted
+table: products            # Required - name of the table
+records:                   # Required - array of records
+  - id: 1                  # Primary key field
+    name: "Laptop"
+    price: 999.99
+```
+
+## Key Features
+
+- **Automatic Table Creation**: Tables are created if they don't exist
+- **Primary Key Detection**: The `id` field is automatically detected as the primary key
+- **File Modification Time**:
+  - The data loader uses the file's modification time (`mtime`) to determine if records should be updated
+  - "Touching" a file (updating its modification time) will force a reload of its data
+  - This allows for simpler data files without timestamp properties in the records
+- **Multi-file Support**: You can have multiple data files for different tables
+- **Complex Data Types**: Supports nested objects, arrays, and various data types
+- **One Table Per File**: Each file should define one table
+
+## Tips for Managing Data
+
+- To force a reload of data, simply update the file's modification time:
+  ```bash
+  # Update the file's timestamp using touch
+  touch data/products.json
+  ```
+- If you need to restore to previous data, you can replace the file and update its timestamp
+- The system automatically handles the comparison between file modification time and record timestamps
+
+## Sample Files
+
+- `categories.json`: Category data with parent/child relationships
+- `products.json`: Product data with references to categories
+- `users.json`: User account data
+
+These sample files demonstrate common data patterns and relationships.
