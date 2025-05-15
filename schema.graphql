@@ -1,5 +1,8 @@
-## Here we can define any tables in our database. This example shows how we define a type as a table using
-## the type name as the table name and specifying it is an "export" available in the REST and other external protocols.
+## This schema defines the data model for our application.
+## Each type with the @table directive becomes a table in the database.
+## The @export directive makes it available in the REST API and other external protocols.
+
+## Example table for reference
 type TableName @table @export {
     id: ID @primaryKey # Here we define primary key (must be one)
     name: String # we can define any other attributes here
