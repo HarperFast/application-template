@@ -17,7 +17,7 @@ Data files must contain `table` and `records` fields. The `database` field is op
 
 ### JSON Example
 
-```json
+```jsonc
 {
   "database": "dev",       // Optional - uses default database if omitted
   "table": "Product",      // Required - name of the table
@@ -45,11 +45,13 @@ records:                   # Required - array of records
 ## Key Features
 
 - **Automatic Table Creation**: Tables are created if they don't exist
-- **Primary Key Detection**: The `id` field is automatically detected as the primary key
+- **Schema Inference**:
+  - The system will automatically infer a schema from the first record when creating a new table
+  - The `id` field is automatically detected as the primary key
+  - It's preferred to define the schema explicitly in your application, but this provides a quick start
 - **File Modification Time**:
   - The data loader uses the file's modification time (`mtime`) to determine if records should be updated
   - "Touching" a file (updating its modification time) will force a reload of its data
-  - This allows for simpler data files without timestamp properties in the records
 - **Multi-file Support**: You can have multiple data files for different tables
 - **Complex Data Types**: Supports nested objects, arrays, and various data types
 - **One Table Per File**: Each file should define one table
@@ -63,11 +65,3 @@ records:                   # Required - array of records
   ```
 - If you need to restore to previous data, you can replace the file and update its timestamp
 - The system automatically handles the comparison between file modification time and record timestamps
-
-## Sample Files
-
-- `categories.json`: Category data with parent/child relationships
-- `products.json`: Product data with references to categories
-- `users.json`: User account data
-
-These sample files demonstrate common data patterns and relationships.
