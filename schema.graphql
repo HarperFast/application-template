@@ -14,7 +14,7 @@ type Product @table @export {
     id: ID @primaryKey
     name: String @indexed
     price: Float
-    category: Category @relationship(from: categoryId)
+    category: Category @relationship(from: "categoryId")
     details: Any
     inStock: Boolean
 }
@@ -23,9 +23,9 @@ type Category @table @export {
     id: ID @primaryKey
     name: String @indexed
     description: String
-    parent: Category @relationship(from: categoryId)
-    products: [Product] @relationship(to: categoryId)
-    children: [Category] @relationship(to: categoryId)
+    parent: Category @relationship(from: "categoryId")
+    products: [Product] @relationship(to: "categoryId")
+    children: [Category] @relationship(to: "categoryId")
 }
 
 type User @table @export {

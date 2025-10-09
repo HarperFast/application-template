@@ -5,41 +5,33 @@
       "id": "1",
       "name": "Laptop",
       "price": 999.99,
-      "category": "electronics",
-      "inStock": true,
-      "__createdtime__": 1682752800000,
-      "__updatedtime__": 1682752800000
+      "categoryId": "electronics",
+      "inStock": true
     },
     {
       "id": "2",
       "name": "Smartphone",
       "price": 699.99,
-      "category": "electronics",
-      "inStock": false,
-      "__createdtime__": 1682752801000,
-      "__updatedtime__": 1682752801000
+      "categoryId": "electronics",
+      "inStock": false
     },
     {
       "id": "3",
       "name": "Desk Chair",
       "price": 199.99,
-      "category": "furniture",
+      "categoryId": "furniture",
       "details": {
         "weight": 1.5,
         "color": "black"
       },
-      "inStock": true,
-      "__createdtime__": 1682752802000,
-      "__updatedtime__": 1682752803000
+      "inStock": true
     },
     {
       "id": "4",
       "name": "Jeans",
       "price": 98.99,
-      "category": "pants",
-      "inStock": true,
-      "__createdtime__": 1682752802000,
-      "__updatedtime__": 1682752802000
+      "categoryId": "pants",
+      "inStock": true
     }
   ]
 }

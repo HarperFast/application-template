@@ -7,18 +7,14 @@
       "username": "jane_doe",
       "email": "jane@example.com",
       "firstName": "Jane",
-      "lastName": "Doe",
-      "__createdtime__": 1682752806000,
-      "__updatedtime__": 1682752806000
+      "lastName": "Doe"
     },
     {
       "id": "2",
       "username": "Jon_smith",
       "email": "jon@example.com",
       "firstName": "Jon",
-      "lastName": "Smith",
-      "__createdtime__": 1682752807000,
-      "__updatedtime__": 1682752807000
+      "lastName": "Smith"
     }
   ]
 }
