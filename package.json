@@ -3,5 +3,10 @@
   "version": "1.0.0",
   "description": "A template for building HarperDB applications",
   "type": "module",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "scripts": {
+    "dev": "harperdb dev .",
+    "login": "bash -c 'read -r -p \"Enter CLI target username: \" USERNAME; read -r -s -p \"Enter CLI target password: \" PASSWORD; echo; printf \"CLI_TARGET_USERNAME='%s'\\nCLI_TARGET_PASSWORD='%s'\\n\" \"$USERNAME\" \"$PASSWORD\" > .env'",
+    "deploy": "npx -y dotenv-cli -- harperdb deploy . target='http://localhost:9925' restart=rolling replicated=true"
+  }
 }
