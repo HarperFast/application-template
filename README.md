@@ -1,59 +1,33 @@
 # Your New Harper Fabric App
 
-This is a template for building [Harper](https://www.harpersystems.dev/) applications. You can download this repository as a starting point for building applications with Harper.
+Your new app is now deployed and running on Harper Fabric!
 
-## Installation
+Here are a few things for you to know:
 
-To get started, make sure you have [installed Harper](https://docs.harperdb.io/docs/deployments/install-harper), which can be quickly:
+### Defining Your Schema
 
-```sh
-npm install -g harperdb
-```
+The [schema.graphql](./schema.graphql) is the table schema definition, and is the heart of a great Harper app. This is
+the main starting point for defining your [database schema](./databases), specifying which tables you want and what attributes/fields
+they should have. REST endpoints will get stood up for any table that you `@export`.
 
-## Development
+### Adding Custom Endpoints
 
-Then you can start your app:
-```sh
-npm run dev
-```
+The [resources.js](./resources.js) provides a template for defining JavaScript resource classes, for customized
+application logic in your endpoints.
 
-Test your application works by querying the `/Greeting` endpoint:
+### Viewing Your Website
 
-```sh
-curl http://localhost:9926/Greeting
-```
+Pop open [http://localhost:9926](http://localhost:9926) to view the [index.html](./web/index.html) from the web directory in your browser.
 
-You should see the following:
+### Using Your API
 
-```json
-{"greeting":"Hello, world!"}
-```
+Head to the [APIs](./apis) tab to explore your endpoints and exercise them. You can click the "Authenticate" button to
+see what different users will be able to access through your API.
 
-Navigate to [http://localhost:9926](http://localhost:9926) in a browser and view the functional web application.
+## Keep Going!
 
-For more information about getting started with HarperDB and building applications, see our [getting started guide](https://docs.harperdb.io/docs/getting-started).
+For more information about getting started with HarperDB and building applications, see
+our [getting started guide](https://docs.harperdb.io/docs/getting-started).
 
-For more information on Harper Components, see the [Components documentation](https://docs.harperdb.io/docs/developers/components).
-
-Take a look at the [default configuration](./config.yaml), which specifies how files are handled in your application.
-
-The [schema.graphql](./schema.graphql) is the table schema definition. This is the main starting point for defining your database schema, specifying which tables you want and what attributes/fields they should have.
-
-The [resources.js](./resources.js) provides a template for defining JavaScript resource classes, for customized application logic in your endpoints.
-
-
-## Deployment
-
-When you are ready, head to https:/fabric.harper.fast, log in to your account, and create a cluster if you haven't already.
-
-Set up your .env file with your secure cluster credentials. Don't commit this file to source control!
-
-```sh
-npm run login
-```
-
-Then you can deploy your app to your cluster:
-
-```sh
-npm run deploy
-```
+For more information on Harper Components, see
+the [Components documentation](https://docs.harperdb.io/docs/developers/components).
