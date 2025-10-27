@@ -14,7 +14,7 @@ npm install -g harperdb
 
 Then you can start your app:
 ```sh
-npm start
+npm run dev
 ```
 
 Test your application works by querying the `/Greeting` endpoint:
