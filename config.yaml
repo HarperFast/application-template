@@ -20,4 +20,3 @@ jsResource:
 # Serve the static files from the web directory as a web application
 static:
   files: 'web/*'
-  
