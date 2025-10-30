@@ -27,7 +27,7 @@ see what different users will be able to access through your API.
 ## Keep Going!
 
 For more information about getting started with HarperDB and building applications, see
-our [getting started guide](https://docs.harperdb.io/docs/getting-started).
+our [getting started guide](https://docs.harperdb.io/docs).
 
 For more information on Harper Components, see
-the [Components documentation](https://docs.harperdb.io/docs/developers/components).
+the [Components documentation](https://docs.harperdb.io/docs/reference/components).
