@@ -1,0 +1,43 @@
+scalar Any
+scalar BigInt
+scalar Blob
+scalar Boolean
+scalar Bytes
+scalar Date
+scalar Float
+scalar ID
+scalar Int
+scalar Long
+scalar String
+
+directive @table(
+	table: String
+	database: String
+	expiration: Int
+	audit: Boolean
+) on OBJECT
+directive @export(
+	name: String
+) on OBJECT
+directive @sealed on OBJECT
+
+directive @primaryKey on FIELD_DEFINITION
+directive @indexed(
+	type: String
+	distance: String
+	efConstruction: Int
+	M: Int
+	optimizeRouting: Int
+	mL: Int
+	efSearchConstruction: Int
+) on FIELD_DEFINITION
+directive @computed(
+	from: String
+	version: Int
+) on FIELD_DEFINITION
+directive @createdTime on FIELD_DEFINITION
+directive @updatedTime on FIELD_DEFINITION
+directive @relationship(
+	from: [ID]
+	to: ID
+) on FIELD_DEFINITION

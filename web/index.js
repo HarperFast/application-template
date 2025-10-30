@@ -4,7 +4,7 @@ const decrementButton = document.getElementById('decrement');
 const incrementButton = document.getElementById('increment');
 
 function updateDisplay() {
-	counterDisplay.textContent = count;
+	counterDisplay.textContent = String(count);
 }
 
 decrementButton.addEventListener('click', () => {

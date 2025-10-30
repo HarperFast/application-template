@@ -1,0 +1,25 @@
+## Here we can define any tables in our database. This example shows how we define a type as a table using
+## the type name as the table name and specifying it is an "export" available in the REST and other external protocols.
+type Product @table @export(name: "product") {
+	id: ID! @primaryKey # Every table needs a primaryKey
+	name: String! # And then we can add other fields!
+	readyForMarket: Boolean!
+	released: Date! @indexed
+	thumbnail: Bytes!
+	image: Blob!
+	quantity: Int!
+	desiredSaleQuantity: Long!
+	price: Float!
+	taxRate: Float!
+	realTaxRate: BigInt!
+	totalPrice: Float! @computed(from: "price + (price * taxRate)")
+	reviews: [Review]! @relationship(to: "productId")
+	metadata: Any!
+}
+
+type Review @table @export(name: "review") {
+	id: ID! @primaryKey
+	productId: ID! @indexed
+	product: Product @relationship(from: "productId")
+	comments: String!
+}
