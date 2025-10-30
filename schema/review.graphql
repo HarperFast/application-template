@@ -1,0 +1,6 @@
+type Review @table @export(name: "review") {
+	id: ID! @primaryKey
+	productId: ID! @indexed
+	product: Product @relationship(from: "productId")
+	comments: String!
+}
