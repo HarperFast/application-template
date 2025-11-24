@@ -33,7 +33,7 @@ npm run dev
 
 Harper will start at:
 
-```arduino
+```
 http://localhost:9926/
 ```
 
