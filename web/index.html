@@ -3,26 +3,115 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Harper Application Template</title>
+    <title>Harper Owners & Dogs</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main>
-      <h1>Harper Application Template</h1>
-      <p>
-        This is an example of serving static assets using the built-in
-        <a
-          href="https://docs.harperdb.io/docs/reference/components/built-in-extensions#static"
-          >static component</a
-        >. <br />
-        You can use this component to serve web applications!
-      </p>
-      <div>
-        <p class="count" id="count">0</p>
-        <button class="decrement" id="decrement">-</button>
-        <button class="increment" id="increment">+</button>
-      </div>
-    </main>
+    <div class="app">
+      <header class="header">
+        <div class="logo">H</div>
+        <div>
+          <h1>Harper Owners &amp; Dogs</h1>
+          <p>Interact with your Harper endpoints from the browser.</p>
+        </div>
+      </header>
+
+      <main class="grid">
+        <!-- LEFT: Owner / Dog generic REST box -->
+        <section class="card">
+          <h2>Table API: Owner &amp; Dog</h2>
+          <p class="hint">Send requests to <code>/Owner</code> or <code>/Dog</code>.</p>
+
+          <div class="toggle-row">
+            <span class="label">Resource</span>
+            <div class="toggle-group" id="resource-toggle">
+              <button type="button" class="toggle active" data-resource="Owner">
+                Owner
+              </button>
+              <button type="button" class="toggle" data-resource="Dog">
+                Dog
+              </button>
+            </div>
+          </div>
+
+          <div class="toggle-row">
+            <span class="label">Method</span>
+            <div class="toggle-group" id="method-toggle">
+              <button type="button" class="toggle active" data-method="GET">
+                GET
+              </button>
+              <button type="button" class="toggle" data-method="POST">
+                POST
+              </button>
+              <button type="button" class="toggle" data-method="PUT">
+                PUT
+              </button>
+              <button type="button" class="toggle" data-method="PATCH">
+                PATCH
+              </button>
+              <button type="button" class="toggle" data-method="DELETE">
+                DELETE
+              </button>
+            </div>
+          </div>
+
+          <form id="table-form" class="form">
+            <label>
+              ID
+              <input id="table-id" />
+            </label>
+
+            <label>
+              JSON Body (for methods with a request body)
+              <textarea id="table-body" rows="6"></textarea>
+            </label>
+
+            <button id="table-submit" type="submit" class="btn primary">
+              Send Request
+            </button>
+          </form>
+        </section>
+
+        <!-- RIGHT: OwnerHasBreed resource box -->
+        <section class="card">
+          <h2>Custom Resource: OwnerHasBreed</h2>
+          <p class="hint">
+            Sends <code>GET /OwnerHasBreed?ownerName=...&amp;breed=...</code>.
+          </p>
+
+          <form id="breed-form" class="form">
+            <label>
+              Owner Name
+              <input id="breed-owner-name" />
+            </label>
+            <label>
+              Breed
+              <input id="breed-name" />
+            </label>
+            <button id="breed-submit" type="submit" class="btn secondary">
+              Check Breed
+            </button>
+          </form>
+
+          <div id="breed-result" class="badge badge-muted">
+            No check performed yet.
+          </div>
+        </section>
+
+        <!-- Full-width: latest response viewer -->
+        <section class="card card-wide">
+          <h2>Latest API Response</h2>
+          <p class="hint">Shows the last JSON response from any request.</p>
+          <pre id="api-output" class="code">// Ready. Submit a request above.</pre>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>Powered by Harper</span>
+        <span>•</span>
+        <span>Use this page to explore your local API.</span>
+      </footer>
+    </div>
 
     <script src="index.js"></script>
   </body>
