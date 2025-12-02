@@ -55,7 +55,7 @@ Harper uses a component system with two main flavors:
 		- schema.graphql
 		- resources.js
 		- web/ (optional)
-		- package.json (optional, if Node dependencies are needed)
+		- package.json
 	- During load, Harper reads config.yaml to determine which built-in
 	  components and extensions to activate (rest, graphqlSchema, jsResource,
 	  static, etc.).
@@ -106,13 +106,13 @@ Canonical minimal Harper application config:
 rest: true
 
 graphqlSchema:
-files: "schema.graphql"
+  files: "schema.graphql"
 
 jsResource:
-files: "resources.js"
+  files: "resources.js"
 
 static:
-files: "web/*"
+  files: "web/*"
 
 Additional common options:
 
@@ -131,11 +131,15 @@ Additional common options:
 	- files: "roles.yaml"
 	  For configuring role-based access control for tables and resources.
 
+- dataLoader:
+	- files: "data.json"
+      For preloading data into the database.
+
 - Plugins or custom extensions can be added under their own keys:
   myPlugin:
-  package: "@harperdb/my-plugin"
-  files: "foo.js"
-  timeout: 45000
+    package: "@harperdb/my-plugin"
+    files: "foo.js"
+    timeout: 45000
 
 Application-specific install behavior:
 
@@ -262,16 +266,16 @@ Key annotations on types:
 
 Canonical example pattern:
 
-type Owner @table(database: "application") @export {
+type Owner @table() @export {
 id: ID @primaryKey
 name: String! @indexed
 dogIds: [ID] @indexed
 
-owner_dog_count: Int @computed(version: 1)
+ownerDogCount: Int @computed(version: 1)
 dogs: [Dog] @relationship(from: dogIds)
 }
 
-type Dog @table(database: "application") @export {
+type Dog @table() @export {
 id: ID @primaryKey
 name: String! @indexed
 breed: String! @indexed
@@ -300,13 +304,13 @@ jsResource.
 - Generated from GraphQL schema types marked with @table.
 - Available under the "databases" import:
 
-  import { databases } from "harperdb";
+  import { tables } from "harperdb";
 
-  const OwnerTable = databases.application.Owner;
+  const OwnerTable = tables.Owner;
 
 - Methods typically include:
 	- create(record, context)
-	- update(record, context)
+	- put(record, context)
 	- delete(identifier, context)
 	- search(query, context)
 	- get(identifier, context)
@@ -323,9 +327,9 @@ jsResource.
 - To add custom REST behavior for a table, create a class that extends
   the table class:
 
-  import { databases } from "harperdb";
+  import { tables } from "harperdb";
 
-  const OwnerTable = databases.application.Owner;
+  const OwnerTable = tables.Owner;
 
   export class Owner extends OwnerTable {
   static loadAsInstance = false;
@@ -357,7 +361,7 @@ jsResource.
 - For resources not tied directly to a single table, extend the Resource
   base class:
 
-  import { Resource, databases } from "harperdb";
+  import { Resource, tables } from "harperdb";
 
   export class OwnerHasBreed extends Resource {
   static loadAsInstance = false;
@@ -379,68 +383,30 @@ jsResource.
 	- Check required fields, collect missing names, return
 	  { statusCode: 400, message: "..." } on error.
 - Logging:
-	- Use console.log/console.warn/console.error with a prefix containing
-	  the resource name to aid tracing.
+	- Use logging.info / logger.warn / logger.error to log messages.
 - Error handling:
-	- Catch errors, log them, and return an object with statusCode: 500
-	  and a message (plus possibly an error id).
+	- Error should be thrown/propagated. Do not catch errors unless there is an appropriate way to tolerate them. Error objects should be assigned a `statusCode` property, if there is an appropriate corresponding HTTP status code.
+- Database access:
+	- Use the table classes directly (e.g.
 
 ============================================================
 7. HARPERDB OPERATIONS API
    ============================================================
 
-The Operations API is used to perform database and administrative
-operations. It uses JSON payloads that include an "operation" field
+The Operations API is used to perform administrative
+operations. It runs on a separate port (9925), and should only be used for administrative purposes, and generally should not be used by application code.
+It uses JSON payloads that include an "operation" field
 specifying what is being done.
 
 Common operation shapes:
 
-7.1 SQL operation
+7.1 Read Logs
 
 {
-"operation": "sql",
-"sql": "SELECT * FROM application.Owner"
+"operation": "read_logs",
+"limit": "100",
+"order": "desc"
 }
-
-- Executes a SQL query against Harper's SQL interface.
-- Results are returned as an array of rows.
-
-7.2 Insert operation
-
-{
-"operation": "insert",
-"database": "application",
-"table": "Owner",
-"records": [
-{ "id": "1", "name": "Alice" }
-]
-}
-
-- Inserts one or more records into the specified table.
-
-7.3 Update operation
-
-{
-"operation": "update",
-"database": "application",
-"table": "Owner",
-"records": [
-{ "id": "1", "name": "Alicia" }
-]
-}
-
-- Updates record(s) in the specified table by primary key.
-
-7.4 Delete operation
-
-{
-"operation": "delete",
-"database": "application",
-"table": "Owner",
-"hash_values": ["1"]
-}
-
-- Deletes records by their primary key values.
 
 7.5 Component management operations
 
@@ -528,13 +494,6 @@ Error responses:
 - For missing resources, use statusCode 404.
 - For unexpected server errors, use statusCode 500.
 
-Typical response objects:
-
-- { statusCode: 200, ...payload }
-- { statusCode: 400, message: "Bad request: ..." }
-- { statusCode: 404, message: "Not found" }
-- { statusCode: 500, message: "Internal server error" }
-
 Conventions:
 
 - Keep resources small and focused.
@@ -621,245 +580,7 @@ Inside any Resource or table extension, you can:
 	- \`Table.search(query, context)\`
 	- \`Table.get(identifier, context)\`
 - Use \`for await (... of Table.search(query))\` for streaming large results.
-- Use the Operations API for more advanced SQL or batch ops.
 
-The \`target\` parameter supplies request context:
-
-- \`target.get("paramName")\` → query/path params.
-- \`target.method\` → HTTP method (when relevant).
-- \`target.headers\` → headers.
-- \`target.body\` → raw body (for some integrations).
-
-Return values should be simple JSON-serializable objects, typically:
-
-- \`{ statusCode: 200, ...payload }\`
-- \`{ statusCode: 400, message: "Bad request: ...", details: {...} }\`
-- \`{ statusCode: 404, message: "Not found" }\`
-- \`{ statusCode: 500, message: "Internal server error" }\`
-
-2) EXAMPLE: MULTI-TABLE TRANSACTION-LIKE WORKFLOW
-
-This example shows an "OrderCheckout" resource that:
-
-- Validates input.
-- Fetches user + product.
-- Checks inventory.
-- Creates an order.
-- Decrements inventory.
-- Rolls back order if inventory update fails.
-
-import { databases, Resource } from "harperdb";
-
-const UserTable = databases.application.User;
-const ProductTable = databases.application.Product;
-const OrderTable = databases.application.Order;
-
-export class OrderCheckout extends Resource {
-static loadAsInstance = false;
-
-async post(target, data) {
-try {
-const userId = data?.userId;
-const productId = data?.productId;
-const quantity = Number(data?.quantity || 1);
-
-      const missing = [];
-      if (!userId) missing.push("userId");
-      if (!productId) missing.push("productId");
-      if (!quantity || quantity <= 0) missing.push("quantity (>0)");
-
-      if (missing.length > 0) {
-        return {
-          statusCode: 400,
-          message: \`Missing or invalid fields: \${missing.join(", ")}\`,
-        };
-      }
-
-      // 1) Fetch user and product
-      const user = await UserTable.get(userId, this);
-      const product = await ProductTable.get(productId, this);
-
-      if (!user) {
-        return { statusCode: 404, message: "User not found" };
-      }
-      if (!product) {
-        return { statusCode: 404, message: "Product not found" };
-      }
-
-      // 2) Check inventory
-      if (product.stock < quantity) {
-        return {
-          statusCode: 400,
-          message: "Insufficient stock",
-          available: product.stock,
-        };
-      }
-
-      // 3) Create order
-      const orderRecord = {
-        id: data.id || crypto.randomUUID(),
-        userId,
-        productId,
-        quantity,
-        status: "PENDING",
-        createdAt: new Date().toISOString(),
-      };
-
-      const createdOrder = await OrderTable.create(orderRecord, this);
-
-      // 4) Decrement inventory
-      try {
-        await ProductTable.update(
-          {
-            id: product.id,
-            stock: product.stock - quantity,
-          },
-          this,
-        );
-      } catch (e) {
-        console.error("[OrderCheckout] Inventory update failed, rolling back order", e);
-        // Best-effort rollback
-        try {
-          await OrderTable.delete(orderRecord.id, this);
-        } catch (rollbackErr) {
-          console.error("[OrderCheckout] Failed to rollback order", rollbackErr);
-        }
-
-        return {
-          statusCode: 500,
-          message: "Failed to update inventory",
-        };
-      }
-
-      // 5) Mark order as CONFIRMED
-      const confirmedOrder = await OrderTable.update(
-        { id: orderRecord.id, status: "CONFIRMED" },
-        this,
-      );
-
-      return {
-        statusCode: 201,
-        order: confirmedOrder,
-      };
-    } catch (err) {
-      console.error("[OrderCheckout] Unexpected error", err);
-      return {
-        statusCode: 500,
-        message: "Internal server error",
-      };
-    }
-}
-}
-
-3) EXAMPLE: SEARCH + FILTER + PAGINATION + RELATIONSHIPS
-
-This example shows a resource that:
-
-- Accepts query params (page, limit, sort).
-- Uses a search query with conditions and order.
-- Hydrates relationships via schema-defined relationships.
-
-import { databases, Resource } from "harperdb";
-
-const OrderTable = databases.application.Order;
-
-export class ListUserOrders extends Resource {
-static loadAsInstance = false;
-
-async get(target) {
-const userId = target.get("userId");
-const page = Number(target.get("page") || 1);
-const limit = Math.min(Number(target.get("limit") || 20), 100);
-
-    if (!userId) {
-      return { statusCode: 400, message: "userId is required" };
-    }
-
-    const offset = (page - 1) * limit;
-
-    const query = {
-      select: [
-        "id",
-        "userId",
-        "productId",
-        "quantity",
-        "status",
-        "createdAt",
-        {
-          name: "product",
-          select: ["id", "name", "price"],
-        },
-      ],
-      conditions: [{ attribute: "userId", comparator: "eq", value: userId }],
-      order: [{ attribute: "createdAt", direction: "desc" }],
-      limit,
-      offset,
-    };
-
-    const orders = [];
-    for await (const order of OrderTable.search(query, this)) {
-      orders.push(order);
-    }
-
-    return {
-      statusCode: 200,
-      page,
-      limit,
-      count: orders.length,
-      orders,
-    };
-}
-}
-
-4) EXAMPLE: MIXING TABLE APIS WITH OPERATIONS API
-
-Sometimes a resource needs raw SQL or batch operations.
-You can call the Harper Operations API from within a resource
-to perform advanced tasks. This example shows the pattern.
-
-import { Resource, operations } from "harperdb";
-
-export class HighValueCustomers extends Resource {
-static loadAsInstance = false;
-
-async get(target) {
-const minTotal = Number(target.get("minTotal") || 1000);
-
-    const op = {
-      operation: "sql",
-      sql: \`
-        SELECT userId, SUM(total) AS total_spent
-        FROM application.Order
-        GROUP BY userId
-        HAVING SUM(total) >= \${minTotal}
-        ORDER BY total_spent DESC
-      \`,
-    };
-
-    const result = await operations.exec([op], this);
-    const rows = Array.isArray(result?.[0]?.data) ? result[0].data : [];
-
-    return {
-      statusCode: 200,
-      minTotal,
-      customers: rows,
-    };
-}
-}
-
-5) WHEN GENERATING COMPLEX LOGIC:
-
-- Prefer clear, step-by-step structure inside resource methods.
-- Validate inputs early and return 400 on bad input.
-- Explicitly handle "not found" with 404.
-- For multi-step workflows, consider failure modes and clean-up / rollback.
-- Use logging (console.log/warn/error) with a clear prefix like
-  "[OrderCheckout]" or "[ListUserOrders]" to aid debugging.
-- Keep business logic inside Resource methods or small helpers defined
-  in the same file; avoid scattering it across many unrelated modules
-  unless the user requests a more layered architecture.
-
-============================================================
+- ============================================================
 END OF HARPER KNOWLEDGE CONTEXT
 ============================================================
-`;
