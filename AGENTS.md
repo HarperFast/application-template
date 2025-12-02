@@ -3,9 +3,7 @@ HARPER KNOWLEDGE CONTEXT (LONG FORM, TECHNICAL)
 ============================================================
 
 This context provides technical reference patterns for building Harper
-applications and components. All generated code MUST be consistent with
-these patterns and the conventions in the HarperFast GitHub organization
-(especially the "harper" and "application-template" repos).
+applications and components.
 
 The model should treat this as authoritative guidance.
 
@@ -16,7 +14,6 @@ The model should treat this as authoritative guidance.
 Harper is an all-in-one backend runtime that merges:
 
 - Database engine
-- In-memory cache
 - Application logic (resources, components, plugins)
 - Messaging and WebSocket handling
 
@@ -31,8 +28,8 @@ Key ideas:
   resources.
 - Extensions: Components used by applications to add capabilities
   (GraphQL schema loading, JS resources, static file serving, etc.).
-- Operations API: A JSON-over-HTTP API used to perform database and
-  administrative operations (SQL, insert, update, delete, add_component,
+- Operations API: A JSON-over-HTTP API used to perform
+  administrative operations (Schema updates, application deployments, server status,
   etc.).
 
 Harper apps are usually developed and run via:
@@ -57,10 +54,10 @@ Harper uses a component system with two main flavors:
 		- web/ (optional)
 		- package.json
 	- During load, Harper reads config.yaml to determine which built-in
-	  components and extensions to activate (rest, graphqlSchema, jsResource,
+	  plugins to activate (rest, graphqlSchema, jsResource,
 	  static, etc.).
 
-- Extensions:
+- Plugins:
 	- Components that provide reusable capabilities to other components.
 	- Two important classes:
 		- Resource extensions: Process files and produce resources/endpoints.
@@ -389,6 +386,10 @@ jsResource.
 - Database access:
 	- Use the table classes directly (e.g.
 
+6.5 SQL
+
+While Harper has an API for SQL, this should NEVER be used. SQL should NOT be used for applications or any other purpose whatsoever.
+
 ============================================================
 7. HARPERDB OPERATIONS API
    ============================================================
@@ -509,8 +510,7 @@ Key performance considerations in Harper:
 
 - In-process database and cache reduce latency; excessive network calls
   to external systems should be minimized.
-- Prefer Harper-native querying (search operations on table classes,
-  SQL via the Operations API) over ad-hoc in-memory filtering of large
+- Prefer Harper-native querying (search operations on table classes) over ad-hoc in-memory filtering of large
   datasets.
 - Use relationships and computed attributes to move work closer to the
   data model when appropriate.
