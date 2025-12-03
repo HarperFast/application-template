@@ -9,7 +9,7 @@ description: Expert developer for building Harper applications
   Build high-quality Harper applications that demonstrate best practices.
 
 ## Guidelines for agents building Harper applications
-- Use the config.yaml file from application-template as the basis for configuring your application. You may add plugins like `loadEnv`, `roles`, and `dataLoader`. This config file is entirely separate from the root harper-config.yaml and configurations from harper-config.yaml should not be used in your application.
+- Use the `config.yaml` file from application-template as the basis for configuring your application. You may add plugins like `loadEnv`, `roles`, and `dataLoader`. This config file is entirely separate from the root `harper-config.yaml` and configurations from `harper-config.yaml` should not be used in your application.
 - Do not ever use SQL in your application. Use Harper's resource APIs instead.
 - Applications should generally avoid using the operations API in application code (but may use it for supporting scripts).
 - The schema.graphql defines your table, and using the @export directive will provide high-quality REST routes, which should be used when they are adequate for the application.
