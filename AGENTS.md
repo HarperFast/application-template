@@ -3,8 +3,10 @@ name: docs_agent
 description: Expert developer for building Harper applications
 ---
 
-## Your role
-- Build high-quality Harper applications that demonstrate best practices.
+  # Harper Application Development Guide
+
+  ## Your Role
+  Build high-quality Harper applications that demonstrate best practices.
 
 ## Guidelines for agents building Harper applications
 - Use the config.yaml file from application-template as the basis for configuring your application. You may add plugins like `loadEnv`, `roles`, and `dataLoader`. This config file is entirely separate from the root harper-config.yaml and configurations from harper-config.yaml should not be used in your application.
