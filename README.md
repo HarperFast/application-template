@@ -13,7 +13,7 @@ endpoints will get stood up for any table that you `@export`.
 
 ### 2. Add Custom Endpoints
 
-The [resources.js](./resources.js) provides a template for defining JavaScript resource classes for customized
+The [resources/greeting.ts](./resources/greeting.ts) provides a template for defining JavaScript resource classes for customized
 application logic in your endpoints.
 
 ### 3. View Your Website
