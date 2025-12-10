@@ -11,7 +11,7 @@ rest: true
 
 # These reads GraphQL schemas to define the schema of database/tables/attributes.
 graphqlSchema:
-  files: 'schema/*.graphql'
+  files: 'schema.graphql'
 
 # Loads JavaScript modules such that their exports are exported as resources
 jsResource:
