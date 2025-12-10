@@ -2,31 +2,32 @@
 
 Your new app is now deployed and running on Harper Fabric!
 
-Here are a few things for you to know:
+Here's what you should do next:
 
-### Defining Your Schema
+### 1. Define Your Schema
 
-The [schema.graphql](./schema.graphql) is the table schema definition, and is the heart of a great Harper app. This is
-the main starting point for defining your [database schema](./databases), specifying which tables you want and what attributes/fields
-they should have. REST endpoints will get stood up for any table that you `@export`.
+Open your [schema.graphql](./schema.graphql) and tap [+ New Table](./schema.graphql?ShowAddTableModal=true). This is
+your table schema definition, and is the heart of a great Harper app. This is the main starting point for defining your
+[database schema](./databases), specifying which tables you want and what attributes/fields they should have. REST
+endpoints will get stood up for any table that you `@export`.
 
-### Adding Custom Endpoints
+### 2. Add Custom Endpoints
 
-The [resources.js](./resources.js) provides a template for defining JavaScript resource classes, for customized
+The [resources.js](./resources.js) provides a template for defining JavaScript resource classes for customized
 application logic in your endpoints.
 
-### Viewing Your Website
+### 3. View Your Website
 
-Pop open [http://localhost:9926](http://localhost:9926) to view the [index.html](./web/index.html) from the web directory in your browser.
+Pop open [http://localhost:9926](http://localhost:9926) to view [web/index.html](./web/index.html) in your browser.
 
-### Using Your API
+### 4. Use Your API
 
 Head to the [APIs](./apis) tab to explore your endpoints and exercise them. You can click the "Authenticate" button to
 see what different users will be able to access through your API.
 
 ## Keep Going!
 
-For more information about getting started with HarperDB and building applications, see
+For more information about getting started with Harper and building applications, see
 our [getting started guide](https://docs.harperdb.io/docs).
 
 For more information on Harper Components, see
