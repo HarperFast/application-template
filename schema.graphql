@@ -1,10 +1,10 @@
 ## Here we can define any tables in our database.
 ##
 ## For example, the following creates a table with a REST endpoint.
-# type Person @table @export @sealed {
-# 	id: ID @primaryKey
-# 	name: String! @indexed
-# 	tag: String! @indexed
-# }
+type Person @table @export @sealed {
+	id: ID @primaryKey
+	name: String! @indexed
+	tag: String! @indexed
+}
 ##
 ## When you're done, hit "Save", then "Restart" in the top right!
