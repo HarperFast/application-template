@@ -1,4 +1,7 @@
+import {Resource} from 'harperdb';
+
 /** Here we can define any JavaScript-based resources and extensions to tables
+import {tables} from 'harperdb';
 
 export class MyCustomResource extends tables.TableName {
 	// we can define our own custom POST handler
