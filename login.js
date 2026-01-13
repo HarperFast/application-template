@@ -10,10 +10,13 @@
 //   CLI_TARGET
 //   CLI_TARGET_USERNAME
 //   CLI_TARGET_PASSWORD
+//
+// This only needs to be run once to update your .env! Then you can delete it.
 
-import fs from 'node:fs/promises';
-import path from 'node:path';
+import {readFile, writeFile} from 'node:fs/promises';
+import path, {join} from 'node:path';
 import readline from 'node:readline';
+import {existsSync} from 'node:fs';
 
 process.on('SIGINT', handleSigInt);
 
@@ -52,23 +55,11 @@ async function main() {
     process.exit(1);
   }
 
-  const env = [
-    `CLI_TARGET='${escapeSingleQuotes(url)}'`,
-    `CLI_TARGET_USERNAME='${escapeSingleQuotes(username)}'`,
-    `CLI_TARGET_PASSWORD='${escapeSingleQuotes(password)}'`,
-    '',
-  ].join('\n');
+  await updateEnv('CLI_TARGET', escapeSingleQuotes(url));
+  await updateEnv('CLI_TARGET_USERNAME', escapeSingleQuotes(username));
+  await updateEnv('CLI_TARGET_PASSWORD', escapeSingleQuotes(password));
 
-  const envPath = path.join(process.cwd(), '.env');
-  try {
-    await fs.writeFile(envPath, env, { mode: 0o400 });
-  } catch {
-    await fs.writeFile(envPath, env);
-    await fs.chmod(envPath, 0o400).catch(() => {
-    });
-  }
-
-  process.stdout.write(`Saved credentials to ${path.relative(process.cwd(), envPath)}\n`);
+  console.log(`Saved credentials to ${path.relative(process.cwd(), '.env')}`);
 }
 
 function createInterface() {
@@ -162,6 +153,28 @@ function normalizeUrl(u) {
 
 function escapeSingleQuotes(v) {
   return String(v).replace(/'/g, '\'\\\'\'');
+}
+
+async function updateEnv(key, value) {
+  process.env[key] = value;
+  const envPath = join(process.cwd(), '.env');
+
+  let envContent = '';
+  if (existsSync(envPath)) {
+    envContent = await readFile(envPath, 'utf-8');
+  }
+
+  const regex = new RegExp(`^${key}=.*`, 'm');
+  if (regex.test(envContent)) {
+    envContent = envContent.replace(regex, `${key}=${value}`);
+  } else {
+    if (envContent && !envContent.endsWith('\n')) {
+      envContent += '\n';
+    }
+    envContent += `${key}=${value}\n`;
+  }
+
+  await writeFile(envPath, envContent);
 }
 
 function handleSigInt() {
