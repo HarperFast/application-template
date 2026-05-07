@@ -7,7 +7,7 @@ This is a template for building [Harper](https://www.harper.fast/) applications.
 To get started, make sure you have [installed Harper](https://docs.harperdb.io/docs/deployments/install-harper), which can be done quickly:
 
 ```sh
-npm install -g harperdb
+npm install -g harper
 ```
 
 ## Development

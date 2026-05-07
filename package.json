@@ -5,12 +5,12 @@
   "type": "module",
   "license": "Apache-2.0",
   "scripts": {
-    "start": "harperdb run .",
-    "dev": "harperdb dev .",
+    "start": "harper run .",
+    "dev": "harper dev .",
     "login": "node login.js",
-    "deploy": "npx -y dotenv-cli -- harperdb deploy . restart=rolling replicated=true"
+    "deploy": "npx -y dotenv-cli -- harper deploy . restart=rolling replicated=true"
   },
   "devDependencies": {
-    "harperdb": "^4.7.15"
+    "harper": "^5.0.10"
   }
 }
