@@ -8,9 +8,12 @@
     "start": "harper run .",
     "dev": "harper dev .",
     "login": "node login.js",
-    "deploy": "npx -y dotenv-cli -- harper deploy . restart=rolling replicated=true"
+    "deploy": "npx -y dotenv-cli -- harper deploy . restart=rolling replicated=true",
+    "test:integration": "harper-integration-test-run --isolation=none \"integrationTests/**/*.test.ts\""
   },
   "devDependencies": {
+    "@harperfast/integration-testing": "^0.3.1",
+    "@types/node": "^22.0.0",
     "harper": "^5.0.10"
   }
 }
