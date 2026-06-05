@@ -3,9 +3,16 @@ import { strictEqual, ok } from 'node:assert/strict';
 import { setupHarperWithFixture, teardownHarper, type ContextWithHarper } from '@harperfast/integration-testing';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import { createRequire } from 'node:module';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const FIXTURE_PATH = resolve(__dirname, '..');
+
+// The `harper` package's `exports` map only exposes ".", so the harness's
+// auto-resolution of 'harper/dist/bin/harper.js' fails with ERR_PACKAGE_PATH_NOT_EXPORTED.
+// Resolve the CLI from the (exported) main entry and pass it explicitly.
+const require = createRequire(import.meta.url);
+const harperBinPath = resolve(dirname(require.resolve('harper')), 'bin/harper.js');
 
 function authFetch(ctx: ContextWithHarper, path: string, init: RequestInit & { headers?: Record<string, string> } = {}) {
     const { headers = {}, ...rest } = init;
@@ -15,7 +22,7 @@ function authFetch(ctx: ContextWithHarper, path: string, init: RequestInit & { h
 
 void suite('Application template', (ctx: ContextWithHarper) => {
     before(async () => {
-        await setupHarperWithFixture(ctx, FIXTURE_PATH);
+        await setupHarperWithFixture(ctx, FIXTURE_PATH, { harperBinPath });
     });
 
     after(async () => {
