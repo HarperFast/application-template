@@ -19,7 +19,9 @@ export class MyCustomResource extends tables.TableName {
 // we can also define a custom resource without a specific table
 export class Greeting extends Resource {
 	// a "Hello, world!" handler
-	static get(target, context) {
+	static async get(target, context) {
+		return { greeting: 'Hello, world!' };
+	}
 		return { greeting: 'Hello, world!' };
 	}
 }
