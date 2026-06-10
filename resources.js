@@ -22,6 +22,5 @@ export class Greeting extends Resource {
 	static async get(target, context) {
 		return { greeting: 'Hello, world!' };
 	}
-		return { greeting: 'Hello, world!' };
-	}
 }
+
