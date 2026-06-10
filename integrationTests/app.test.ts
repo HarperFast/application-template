@@ -64,7 +64,7 @@ void suite('Application template', (ctx: ContextWithHarper) => {
 
     void test('GET /Greeting returns hello world greeting', async () => {
         const res = await authFetch(ctx, '/Greeting');
-        ok([200, 404].includes(res.status), `Unexpected status ${res.status}`);
+        strictEqual(res.status, 200);
         if (res.status === 200) {
             const body = await res.json() as { greeting: string };
             ok(body.greeting, 'expected greeting field');
