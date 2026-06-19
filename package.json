@@ -1,16 +1,19 @@
 {
   "name": "application-template",
   "version": "1.0.0",
-  "description": "A template for building HarperDB applications",
+  "description": "A template for building Harper applications",
   "type": "module",
   "license": "Apache-2.0",
   "scripts": {
-    "start": "harperdb run .",
-    "dev": "harperdb dev .",
+    "start": "harper run .",
+    "dev": "harper dev .",
     "login": "node login.js",
-    "deploy": "npx -y dotenv-cli -- harperdb deploy . restart=rolling replicated=true"
+    "deploy": "npx -y dotenv-cli -- harper deploy . restart=rolling replicated=true",
+    "test:integration": "harper-integration-test-run --isolation=none \"integrationTests/**/*.test.ts\""
   },
   "devDependencies": {
-    "harperdb": "^4.7.15"
+    "@harperfast/integration-testing": "^0.3.1",
+    "@types/node": "^22.0.0",
+    "harper": "^5.0.10"
   }
 }

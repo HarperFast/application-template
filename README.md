@@ -7,7 +7,7 @@ This is a template for building [Harper](https://www.harper.fast/) applications.
 To get started, make sure you have [installed Harper](https://docs.harperdb.io/docs/deployments/install-harper), which can be done quickly:
 
 ```sh
-npm install -g harperdb
+npm install -g harper
 ```
 
 ## Development
@@ -31,7 +31,7 @@ You should see the following:
 
 Navigate to [http://localhost:9926](http://localhost:9926) in a browser and view the functional web application.
 
-For more information about getting started with HarperDB and building applications, see our [getting started guide](https://docs.harperdb.io/docs).
+For more information about getting started with Harper and building applications, see our [getting started guide](https://docs.harperdb.io/docs).
 
 For more information on Harper Components, see the [Components documentation](https://docs.harperdb.io/docs/reference/components).
 

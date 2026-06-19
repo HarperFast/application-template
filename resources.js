@@ -1,27 +1,26 @@
-import {Resource} from 'harperdb';
+import { Resource } from 'harper';
 
 /** Here we can define any JavaScript-based resources and extensions to tables
-import {tables} from 'harperdb';
+import {tables} from 'harper';
 
 export class MyCustomResource extends tables.TableName {
 	// we can define our own custom POST handler
-	post(content) {
+	static async post(target, data, context) {
 		// do something with the incoming content;
-		return super.post(content);
+		return super.post(target, data, context);
 	}
 	// or custom GET handler
-	get() {
+	static async get(target, context) {
 		// we can modify this resource before returning
-		return super.get();
+		return super.get(target, context);
 	}
 }
  */
 // we can also define a custom resource without a specific table
 export class Greeting extends Resource {
 	// a "Hello, world!" handler
-	static loadAsInstance = false; // use the updated/newer Resource API
-
-	get() {
+	static async get(target, context) {
 		return { greeting: 'Hello, world!' };
 	}
 }
+
